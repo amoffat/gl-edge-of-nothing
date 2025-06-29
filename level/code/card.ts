@@ -7,7 +7,7 @@ import { Card } from "@gl/types/card";
 export function card(): Card {
   return {
     level: {
-      name: "Template level",
+      name: "The Edge of Creation",
       version: 1,
     },
     credits: [
@@ -17,19 +17,19 @@ export function card(): Card {
         link: "https://x.com/GetLostTheGame",
       },
       {
-        name: "Andrew",
-        role: "Level design",
-        link: "https://x.com/GetLostTheGame",
+        name: "Krishna Palacio",
+        role: "Tileset",
+        link: "https://x.com/krishna_palacio",
       },
       {
-        name: "Pixel Boy",
+        name: "Tim Beek",
         role: "Music",
-        link: "https://x.com/2Pblog1",
+        link: "https://x.com/timbeekmusic",
       },
       {
-        name: "Pixel Boy",
-        role: "Tileset artist",
-        link: "https://x.com/2Pblog1",
+        name: "ansimuz",
+        role: "Gmork",
+        link: "https://x.com/ansimuz",
       },
     ],
   };

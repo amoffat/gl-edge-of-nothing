@@ -1,0 +1,92 @@
+{
+  "columns": 0,
+  "grid": {
+    "height": 1,
+    "orientation": "orthogonal",
+    "width": 1
+  },
+  "margin": 0,
+  "name": "gmork",
+  "spacing": 0,
+  "tilecount": 4,
+  "tiledversion": "1.11.2",
+  "tileheight": 60,
+  "tiles": [
+    {
+      "animation": [
+        {
+          "duration": 275,
+          "tileid": 0
+        },
+        {
+          "duration": 275,
+          "tileid": 1
+        },
+        {
+          "duration": 275,
+          "tileid": 2
+        },
+        {
+          "duration": 275,
+          "tileid": 3
+        }
+      ],
+      "id": 0,
+      "image": "../art/restricted/gmork/idle1.png",
+      "imageheight": 60,
+      "imagewidth": 88,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 8.54705341908387,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 56.5953537209608,
+            "x": 16.8631053944087,
+            "y": 50.8203176269852
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "animation",
+          "type": "string",
+          "value": "Idle"
+        }
+      ],
+      "type": "NPC Tile"
+    },
+    {
+      "id": 1,
+      "image": "../art/restricted/gmork/idle2.png",
+      "imageheight": 60,
+      "imagewidth": 88
+    },
+    {
+      "id": 2,
+      "image": "../art/restricted/gmork/idle3.png",
+      "imageheight": 60,
+      "imagewidth": 88
+    },
+    {
+      "id": 3,
+      "image": "../art/restricted/gmork/idle4.png",
+      "imageheight": 60,
+      "imagewidth": 88
+    }
+  ],
+  "tilewidth": 88,
+  "type": "tileset",
+  "version": "1.10"
+}

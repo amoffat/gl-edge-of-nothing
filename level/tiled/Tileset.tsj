@@ -1,0 +1,15 @@
+{
+  "columns": 96,
+  "image": "../art/restricted/Tileset.png",
+  "imageheight": 1024,
+  "imagewidth": 768,
+  "margin": 0,
+  "name": "Tileset",
+  "spacing": 0,
+  "tilecount": 12288,
+  "tiledversion": "1.11.2",
+  "tileheight": 8,
+  "tilewidth": 8,
+  "type": "tileset",
+  "version": "1.10"
+}

@@ -13,19 +13,7 @@ import { Entrance, Exit } from "@gl/types/gateways";
 export function entrances(): Entrance[] {
   return [
     {
-      name: "east",
-      exits: [],
-    },
-    {
-      name: "west",
-      exits: [],
-    },
-    {
-      name: "south",
-      exits: [],
-    },
-    {
-      name: "well",
+      name: "main",
       exits: [],
     },
   ];
@@ -51,10 +39,9 @@ export function entrances(): Entrance[] {
  */
 export function exits(): Exit[] {
   return [
-    { name: "east", preferredEntrance: "" },
-    { name: "west", preferredEntrance: "" },
-    { name: "south", preferredEntrance: "" },
-    { name: "well", preferredEntrance: "" },
-    { name: "death", preferredEntrance: "" },
+    // Exit through the shattered lake of nothing
+    { name: "lake", preferredEntrance: "" },
+    // Exit through a specific interaction with Gmork (TODO... please suggest lore)
+    { name: "wolf", preferredEntrance: "" },
   ];
 }

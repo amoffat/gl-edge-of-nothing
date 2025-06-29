@@ -1,12 +1,8 @@
 import * as host from "@gl/api/w2h/host";
 
-import { ColorMatrixFilter } from "@gl/filters/colormatrix";
 import { String } from "@gl/types/i18n";
 import { getSunEventName, SunEvent } from "@gl/types/time";
-import { Periodic } from "@gl/utils/periodic";
 import { Player } from "@gl/utils/player";
-import { createHeatFilter, RippleFilter } from "@gl/utils/ripple";
-import { isNight } from "@gl/utils/time";
 import * as dialogue from "./generated/dialogue";
 
 export { initAsyncStack } from "@gl/utils/asyncify";
@@ -21,16 +17,6 @@ const log = host.debug.log;
 let tsfid!: i32;
 let player!: Player;
 let music!: i32;
-let hearts: f32 = 3;
-const overheatColor = "red";
-let nighttime: bool = false;
-let overheat: f32 = 0.0;
-let inWater: bool = false;
-const healingPool = new Periodic(200, 1000);
-const heatDamage = new Periodic(5000, 0);
-let heatFilter!: RippleFilter;
-let colorMatrix!: ColorMatrixFilter;
-let heatAmt: f32 = 0.0;
 
 /**
  * This function initializes your level. It's called once when the level is
@@ -40,49 +26,21 @@ let heatAmt: f32 = 0.0;
 export function initRoom(): void {
   player = Player.default();
 
-  heatFilter = createHeatFilter();
-  colorMatrix = new ColorMatrixFilter();
-  colorMatrix.hot();
-
   tsfid = host.filters.addTiltShift(0.06);
 
-  heatFilter.influence = heatAmt;
-  colorMatrix.influence = heatAmt;
-
-  /**
-   * You can set a fixed time for the level like this.
-   * Be sure to comment out the setSunTime call in `tickRoom` if you do this.
-   */
-  host.time.setSunEvent(SunEvent.SolarNoon, 0);
-
   music = host.sound.loadSound({
-    name: "Musics/music.m4a",
+    name: "restricted/music.m4a",
     loop: true,
     autoplay: true,
     volume: 0.5,
     sprites: [],
   });
 
-  host.ui.setRating(0, 0, hearts, 5, "heart", "red");
-  host.ui.setProgressBar(1, 0, "overheat", overheat, overheatColor);
-  updateHeatFilter();
-}
-
-/**
- * Sets the heat fx (ripple and color grading) based on the time of day.
- */
-function updateHeatFilter(): void {
-  const curSunEvent = host.time.getSunEvent();
-  heatAmt = 0;
-  if (curSunEvent === SunEvent.GoldenHourEnd) {
-    heatAmt = host.time.getSunEventProgress();
-  } else if (curSunEvent === SunEvent.GoldenHour) {
-    heatAmt = 1.0 - host.time.getSunEventProgress();
-  } else if (curSunEvent === SunEvent.SolarNoon) {
-    heatAmt = 1.0;
-  }
-  heatFilter.influence = heatAmt;
-  colorMatrix.influence = heatAmt;
+  /**
+   * You can set a fixed time for the level like this.
+   * Be sure to comment out the setSunTime call in `tickRoom` if you do this.
+   */
+  host.time.setSunEvent(SunEvent.SolarNoon, 0);
 }
 
 /**
@@ -92,26 +50,7 @@ function updateHeatFilter(): void {
  * @returns The strings that our level uses.
  */
 export function strings(): String[] {
-  const ourStrings: String[] = [
-    {
-      key: "overheat",
-      values: [
-        {
-          text: "Heat exhaustion",
-          lang: "en",
-        },
-      ],
-    },
-    {
-      key: "take-fruit",
-      values: [
-        {
-          text: "Steal",
-          lang: "en",
-        },
-      ],
-    },
-  ];
+  const ourStrings: String[] = [];
   const dialogueStrings = dialogue.strings();
   return ourStrings.concat(dialogueStrings);
 }
@@ -163,13 +102,6 @@ export function asyncEvent(id: i32): void {}
  */
 export function pickupEvent(slug: string, took: bool): void {
   log(`Pickup event: ${slug}, ${took}`);
-  if (slug === "flame" && took) {
-    host.lights.toggleLight("flame", false);
-    host.sensors.toggleSensor("flame", false);
-    host.npc.toggleNPC("flame", false);
-  } else if (slug === "fruit" && took) {
-    host.markers.record("stole-fruit");
-  }
 }
 
 /**
@@ -187,11 +119,6 @@ export function buttonPressEvent(slug: string, down: bool): void {
   if (slug.startsWith("passage/") && down) {
     const passage = slug.split("/")[1];
     dialogue.dispatch(passage);
-  }
-
-  if (slug === "fruit-taken" && down) {
-    host.pickup.offerPickup("fruit");
-    host.controls.setButtons([]);
   }
 }
 
@@ -242,33 +169,11 @@ export function sensorEvent(
   if (initiator !== "player") {
     return;
   }
-  if (sensorName === "flame") {
-    dialogue.stage_Fire(entered);
-  } else if (sensorName === "knight") {
-    dialogue.stage_Knight(entered);
-  } else if (sensorName === "well") {
-    dialogue.stage_Well(entered);
-  } else if (sensorName === "exit-east" && entered) {
-    host.map.exit("east", false);
-  } else if (sensorName === "exit-west" && entered) {
-    host.map.exit("west", false);
-  } else if (sensorName === "exit-south" && entered) {
-    host.map.exit("south", false);
-  } else if (sensorName === "nazar") {
-    dialogue.stage_Nazar(entered);
-  } else if (sensorName === "water") {
-    inWater = entered;
-  } else if (sensorName === "fruit") {
-    if (entered) {
-      host.controls.setButtons([
-        {
-          label: "take-fruit",
-          slug: "fruit-taken",
-        },
-      ]);
-    } else {
-      host.controls.setButtons([]);
-    }
+
+  if (sensorName === "gmork") {
+    dialogue.stage_EchoOfGmork(entered);
+  } else if (sensorName === "lake" && entered) {
+    host.map.exit("lake", true);
   }
 }
 
@@ -278,18 +183,6 @@ export function sensorEvent(
  */
 export function timeChangedEvent(event: SunEvent): void {
   log(`Time changed: ${getSunEventName(event)}`);
-
-  nighttime = isNight(event);
-  host.lights.toggleLight("flame", nighttime);
-  host.sensors.toggleSensor("flame", nighttime);
-  host.npc.toggleNPC("flame", nighttime);
-
-  const lights = ["nazar-light", "house-light-1"];
-  for (let i = 0; i < lights.length; i++) {
-    host.lights.toggleLight(lights[i], nighttime);
-  }
-
-  updateHeatFilter();
 }
 
 /**
@@ -312,42 +205,4 @@ export function tickRoom(timestep: f32): void {
   host.player.setAction(player.action);
   host.player.setPos(player.pos.x, player.pos.y);
   host.filters.setTiltShiftY(tsfid, player.pos.y - 10);
-
-  if (inWater && hearts < 5 && healingPool.tick(timestep)) {
-    hearts++;
-    host.ui.setRating(0, 0, hearts, 5, "heart", "red");
-  }
-
-  // This syncs the time of day with the real world.
-  host.time.setSunTime(Date.now());
-
-  // Or we can advance the time of day manually, increasing the step size to
-  // make the days faster.
-  // host.time.advanceSunTime(timestep * 1000);
-
-  updateHeatFilter();
-
-  const timeSeconds: f32 = timestep / 1000;
-  const heatRate: f32 = 0.02;
-  if (heatAmt > 0) {
-    overheat += timeSeconds * heatRate * heatAmt;
-  } else {
-    overheat -= timeSeconds * heatRate;
-  }
-
-  if (inWater) {
-    overheat -= timeSeconds * heatRate * 5;
-  }
-
-  overheat = Math.max(0, Math.min(overheat, 1)) as f32;
-  if (overheat >= 1 && heatDamage.tick(timestep)) {
-    hearts--;
-    host.ui.setRating(0, 0, hearts, 5, "heart", "red");
-  }
-
-  if (hearts <= 0) {
-    host.map.exit("death", true);
-  }
-
-  host.ui.setProgressBar(1, 0, "overheat", overheat, overheatColor);
 }

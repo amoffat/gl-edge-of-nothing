@@ -1,0 +1,15 @@
+{
+  "columns": 288,
+  "image": "../art/restricted/Animated_Blue_Rifts.png",
+  "imageheight": 336,
+  "imagewidth": 2304,
+  "margin": 0,
+  "name": "Animated_Blue_Rifts",
+  "spacing": 0,
+  "tilecount": 12096,
+  "tiledversion": "1.11.2",
+  "tileheight": 8,
+  "tilewidth": 8,
+  "type": "tileset",
+  "version": "1.10"
+}

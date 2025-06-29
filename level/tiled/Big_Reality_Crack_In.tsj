@@ -1,0 +1,38 @@
+{
+  "columns": 4,
+  "image": "../art/restricted/Big_Reality_Crack_In.png",
+  "imageheight": 576,
+  "imagewidth": 864,
+  "margin": 0,
+  "name": "Big_Reality_Crack_In",
+  "spacing": 0,
+  "tilecount": 16,
+  "tiledversion": "1.11.2",
+  "tileheight": 144,
+  "tiles": [
+    {
+      "animation": [
+        {
+          "duration": 400,
+          "tileid": 0
+        },
+        {
+          "duration": 400,
+          "tileid": 1
+        },
+        {
+          "duration": 400,
+          "tileid": 2
+        },
+        {
+          "duration": 400,
+          "tileid": 3
+        }
+      ],
+      "id": 0
+    }
+  ],
+  "tilewidth": 216,
+  "type": "tileset",
+  "version": "1.10"
+}
