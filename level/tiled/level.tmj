@@ -1410,8 +1410,8 @@
                  "type":"Entry",
                  "visible":true,
                  "width":0,
-                 "x":240,
-                 "y":264
+                 "x":244.5,
+                 "y":21.5
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1887,7 +1887,7 @@
          "objects":[
                 {
                  "ellipse":true,
-                 "height":128.916666666666,
+                 "height":136.916666666666,
                  "id":5,
                  "name":"",
                  "properties":[
@@ -1906,7 +1906,7 @@
                  "visible":true,
                  "width":148.666666666667,
                  "x":168.833333333333,
-                 "y":272
+                 "y":264
                 }],
          "opacity":1,
          "type":"objectgroup",
