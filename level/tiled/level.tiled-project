@@ -31,7 +31,7 @@
                 {
                     "name": "color",
                     "type": "color",
-                    "value": ""
+                    "value": "#33ffffff"
                 },
                 {
                     "name": "type",
@@ -108,7 +108,12 @@
                 {
                     "name": "animation",
                     "type": "string",
-                    "value": ""
+                    "value": "Idle"
+                },
+                {
+                    "name": "groundOffset",
+                    "type": "float",
+                    "value": 0
                 }
             ],
             "name": "NPC Tile",

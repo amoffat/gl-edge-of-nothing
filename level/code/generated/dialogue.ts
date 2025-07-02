@@ -104,10 +104,10 @@ export function strings(): String[] {
     },
 
     {
-      key: "4c620786",
+      key: "8ed103cf",
       values: [
         {
-          text: "The Nothing grows stronger... Before long, it will devour this place. Leave now, before it is too late.",
+          text: "The Nothing grows stronger... Before long, it will devour this place. Leave now, before it's too late.",
           lang: "en",
         },
       ],
@@ -355,8 +355,8 @@ export function passage_EchoOfGmork(): void {
   const params = new Map<string, string>();
   twine.incrementVisitCount("ed5d9d40");
 
-  // "The Nothing grows stronger... Before long, it will devour this place. Leave now, before it is too late."
-  text = "4c620786";
+  // "The Nothing grows stronger... Before long, it will devour this place. Leave now, before it's too late."
+  text = "8ed103cf";
   // Who are you?
   choices.push("80495816");
 
