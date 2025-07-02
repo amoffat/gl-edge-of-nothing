@@ -1,3 +1,8 @@
+## 0.13.1 - 7/2/25
+
+- Post template upgrade, run onCreate script
+- Put assets.key in level dir
+
 ## 0.13.0 - 7/2/25
 
 - Decrypt restricted assets before publishing
