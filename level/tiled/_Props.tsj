@@ -1,15 +1,14 @@
-{
-  "columns": 264,
-  "image": "../art/restricted/_Props.png",
-  "imageheight": 632,
-  "imagewidth": 2112,
-  "margin": 0,
-  "name": "_Props",
-  "spacing": 0,
-  "tilecount": 20856,
-  "tiledversion": "1.11.2",
-  "tileheight": 8,
-  "tilewidth": 8,
-  "type": "tileset",
-  "version": "1.10"
+{ "columns":264,
+ "image":"..\/art\/restricted\/_Props.png",
+ "imageheight":632,
+ "imagewidth":2112,
+ "margin":0,
+ "name":"_Props",
+ "spacing":0,
+ "tilecount":20856,
+ "tiledversion":"1.11.2",
+ "tileheight":8,
+ "tilewidth":8,
+ "type":"tileset",
+ "version":"1.10"
 }

@@ -84,10 +84,10 @@ export function strings(): String[] {
     },
 
     {
-      key: "099de93d",
+      key: "3b4b7cea",
       values: [
         {
-          text: "You came to this place because there was nowhere else to go. No one has connected the world you came from to a world of their own imagination. So you were sent here, to me, at the edge of creation.\n\nTo push back the Nothing, someone must add a level to Get Lost. Then, all future travels will go there, instead of here.",
+          text: "You came to this place because there was nowhere else to go. No one has connected the world you came from to a world of their own imagination. So you were sent here, to me, at the edge of creation.\n\nTo push back the Nothing, someone must add a level to Get Lost. Then, all future travels will go there, instead of here.\n\nGo to https://docs.getlost.gg to get started.",
           lang: "en",
         },
       ],
@@ -104,10 +104,10 @@ export function strings(): String[] {
     },
 
     {
-      key: "4c620786",
+      key: "8ed103cf",
       values: [
         {
-          text: "The Nothing grows stronger... Before long, it will devour this place. Leave now, before it is too late.",
+          text: "The Nothing grows stronger... Before long, it will devour this place. Leave now, before it's too late.",
           lang: "en",
         },
       ],
@@ -325,8 +325,8 @@ export function passage_69ff1620(): void {
   const params = new Map<string, string>();
   twine.incrementVisitCount("69ff1620");
 
-  // "You came to this place because there was nowhere else to go. No one has connected the world you came from to a world of their own imagination. So you were sent here, to me, at the edge of creation.\n\nTo push back the Nothing, someone must add a level to Get Lost. Then, all future travels will go there, instead of here."
-  text = "099de93d";
+  // "You came to this place because there was nowhere else to go. No one has connected the world you came from to a world of their own imagination. So you were sent here, to me, at the edge of creation.\n\nTo push back the Nothing, someone must add a level to Get Lost. Then, all future travels will go there, instead of here.\n\nGo to https://docs.getlost.gg to get started."
+  text = "3b4b7cea";
 
   host.text.display("69ff1620", title, text, choices, params, animate);
 }
@@ -355,8 +355,8 @@ export function passage_EchoOfGmork(): void {
   const params = new Map<string, string>();
   twine.incrementVisitCount("ed5d9d40");
 
-  // "The Nothing grows stronger... Before long, it will devour this place. Leave now, before it is too late."
-  text = "4c620786";
+  // "The Nothing grows stronger... Before long, it will devour this place. Leave now, before it's too late."
+  text = "8ed103cf";
   // Who are you?
   choices.push("80495816");
 

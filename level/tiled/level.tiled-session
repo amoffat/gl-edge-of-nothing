@@ -8,6 +8,9 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "Big_Reality_Crack_In.tsj": {
+            "scaleInEditor": 1
+        },
         "CastleTown_A.tsj": {
             "dynamicWrapping": false,
             "scaleInDock": 1,
@@ -30,7 +33,9 @@
     "openFiles": [
     ],
     "project": "level.tiled-project",
+    "property.type": "float",
     "recentFiles": [
+        "Big_Reality_Crack_In.tsj",
         "Animated_Blue_Rifts.tsj",
         "CastleTown_A.tsj"
     ],

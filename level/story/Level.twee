@@ -35,10 +35,12 @@ You came to this place because there was nowhere else to go. No one has connecte
 
 To push back the Nothing, someone must add a level to Get Lost. Then, all future travels will go there, instead of here.
 
+Go to https://docs.getlost.gg to get started.
+
 
 :: Talk to Gmork {"position":"675,400","size":"100,100"}
 <<set _title to "Echo of G'mork">>
-The Nothing grows stronger... Before long, it will devour this place. Leave now, before it is too late.
+The Nothing grows stronger... Before long, it will devour this place. Leave now, before it's too late.
 
 [[Who are you?]]
 [[What is the Nothing?|what-is-nothing]]

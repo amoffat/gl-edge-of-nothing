@@ -1,3 +1,17 @@
+## 0.13.1 - 7/2/25
+
+- Post template upgrade, run onCreate script
+- Put assets.key in level dir
+
+## 0.13.0 - 7/2/25
+
+- Decrypt restricted assets before publishing
+- Added `slow` default player controller
+- Adjust player animation
+- Bugfix multiline dialogue
+- Allow setting dialogue passage title by setting $title var
+- Use engine version 0.13.0
+
 ## 0.12.1 - 6/26/25
 
 - Github workflow for publishing level
