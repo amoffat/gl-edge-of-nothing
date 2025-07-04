@@ -29,10 +29,10 @@ export function initRoom(): void {
   tsfid = host.filters.addTiltShift(0.06);
 
   music = host.sound.loadSound({
-    name: "restricted/music.m4a",
+    name: "restricted/music",
     loop: true,
     autoplay: true,
-    volume: 0.5,
+    volume: 0.2,
     sprites: [],
   });
 
