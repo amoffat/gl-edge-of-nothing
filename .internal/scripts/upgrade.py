@@ -103,9 +103,8 @@ def upgrade_repo(*, target_path: Path, branch: str = "main") -> None:
     # Move new contents into place
     for item in temp_clone_dir.iterdir():
         if should_restore(item):
-            dst = target_path / item.name
-            print(f"Restoring item: {item} to {dst}")
-            shutil.move(str(item), str(dst))
+            print(f"Restoring item: {item} to {target_path}")
+            shutil.move(str(item), str(target_path))
 
     # Restore 'level' directory
     if level_backup.exists():
