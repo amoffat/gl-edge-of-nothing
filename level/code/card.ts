@@ -18,7 +18,7 @@ export function card(): Card {
       },
       {
         name: "Krishna Palacio",
-        role: "Tileset",
+        role: "Tileset artist",
         link: "https://x.com/krishna_palacio",
       },
       {
@@ -28,7 +28,7 @@ export function card(): Card {
       },
       {
         name: "ansimuz",
-        role: "Gmork",
+        role: "Gmork NPC",
         link: "https://x.com/ansimuz",
       },
     ],
