@@ -1,3 +1,48 @@
+The template version should stay in sync with the engine version
+
+## 4.0.0 - 7/22/25
+
+- i18n auto-translator
+- Engine version 4.0.0
+- Bugfix with dialogue bleed
+- Script `deployer` renamed to `deploy`
+
+## 3.0.0 - 7/15/25
+
+- Auto-publish template level
+- Upgrade script improvements
+- Engine bump to 3.0.0
+- `host.platform` api
+- Bugfix with dialogue text param interpolation
+
+## 1.0.1 - 7/12/25
+
+- Fix nap exit
+
+## 1.0.0 - 7/12/25
+
+- Engine bump to 2.0.0
+- Upgrade sound api
+- `host.ui.clearElement()` for clearing custom widgets
+- Replace `west` entry with `main` entry
+- Add `water` entry and exit
+- Beginning dialogue for Omar (the kid)
+- Use a fixed top velocity magnitude for player sprite animation speed
+- Bugfix with manual publish dispatch job
+- Add `nap` exit
+- Add `timerCompletedEvent` callback
+
+## 0.16.0 - 7/8/25
+
+- Add social image
+- Continuous deployment on non-prod
+- Less glitchy time of day setting
+- Add missing camera interface
+
+## 0.15.2 - 7/5/25
+
+- Skip asset decrypt if template repo
+
 ## 0.15.1 - 7/4/25
 
 - Bugfixes with upgrade script
