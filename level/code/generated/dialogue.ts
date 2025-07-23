@@ -5,11 +5,18 @@ import * as level from "../main";
 
 const log = host.debug.log;
 const logError = host.debug.logError;
+const interactButton = "interact";
 
 class State {
   title: string;
   constructor() {
     this.title = "Echo of G'mork";
+  }
+  get params(): string[] {
+    const params = new Array<string>();
+    params.push("title");
+    params.push(this.title.toString());
+    return params;
   }
 }
 
@@ -18,202 +25,8 @@ export const state = new State();
 // If we're using an alias on our link, then we need to map from our shown
 // choice id to our alias choice id.
 const choiceToPassage = new Map<string, string>();
-choiceToPassage.set("1ccc7c51", "e1e1ddc3");
-choiceToPassage.set("057a1926", "e1e1ddc3");
-
-export function strings(): String[] {
-  return [
-    {
-      key: "interact",
-      values: [
-        {
-          text: "Interact",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "8c5807f8",
-      values: [
-        {
-          text: "The shattered waters are a gateway back to creation. Swim into them and you will leave this place.",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "12c63041",
-      values: [
-        {
-          text: "Why are you helping me?",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "268bc183",
-      values: [
-        {
-          text: "Thank you",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "39e61f0e",
-      values: [
-        {
-          text: "Ha! Your arrogance reminds me of a young warrior...",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "69ff1620",
-      values: [
-        {
-          text: "Just tell me how to fight it",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "3b4b7cea",
-      values: [
-        {
-          text: "You came to this place because there was nowhere else to go. No one has connected the world you came from to a world of their own imagination. So you were sent here, to me, at the edge of creation.\n\nTo push back the Nothing, someone must add a level to Get Lost. Then, all future travels will go there, instead of here.\n\nGo to https://docs.getlost.gg to get started.",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "f287420a",
-      values: [
-        {
-          text: "Echo of G'mork",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "8ed103cf",
-      values: [
-        {
-          text: "The Nothing grows stronger... Before long, it will devour this place. Leave now, before it's too late.",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "80495816",
-      values: [
-        {
-          text: "Who are you?",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "1ccc7c51",
-      values: [
-        {
-          text: "What is the Nothing?",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "65e17d6e",
-      values: [
-        {
-          text: "How do I leave?",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "ed5d9d40",
-      values: [
-        {
-          text: "Talk to Gmork",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "78c753ff",
-      values: [
-        {
-          text: "I was once a servant to the power behind the Nothing.",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "057a1926",
-      values: [
-        {
-          text: "But what is it?",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "50388ea1",
-      values: [
-        {
-          text: "You remind me of someone from long ago... And the mistakes that I made when I knew them...\n\nFarewell, $playerName.",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "27bdcc6f",
-      values: [
-        {
-          text: "The Nothing is despair. It is the absence of dreams. It is what is left when people lose hope and forget how to create.",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "adae8f46",
-      values: [
-        {
-          text: "How do I stop it?",
-          lang: "en",
-        },
-      ],
-    },
-
-    {
-      key: "5d5254c5",
-      values: [
-        {
-          text: "Echo of G'mork",
-          lang: "en",
-        },
-      ],
-    },
-  ];
-}
+choiceToPassage.set("70002ded", "e1e1ddc3");
+choiceToPassage.set("9501590c", "e1e1ddc3");
 
 /**
  * Called when the player interacts with a choice dialog.
@@ -239,7 +52,7 @@ export function stage_65e17d6e(entered: bool): void {
   if (entered) {
     host.controls.setButtons([
       {
-        label: "interact",
+        label: interactButton,
         slug: "passage/65e17d6e",
       },
     ]);
@@ -255,18 +68,17 @@ export function passage_65e17d6e(): void {
   const animate = true;
   let text = "";
   const choices: string[] = [];
-  const params = new Map<string, string>();
   twine.incrementVisitCount("65e17d6e");
 
   // "The shattered waters are a gateway back to creation. Swim into them and you will leave this place."
-  text = "8c5807f8";
+  text = "bb4b197d";
   // Why are you helping me?
   choices.push("12c63041");
 
   // Thank you
   choices.push("268bc183");
 
-  host.text.display("65e17d6e", title, text, choices, params, animate);
+  host.text.display("65e17d6e", title, text, choices, state.params, animate);
 }
 
 // Show interact button for "How do I stop it?"
@@ -274,7 +86,7 @@ export function stage_adae8f46(entered: bool): void {
   if (entered) {
     host.controls.setButtons([
       {
-        label: "interact",
+        label: interactButton,
         slug: "passage/adae8f46",
       },
     ]);
@@ -290,15 +102,14 @@ export function passage_adae8f46(): void {
   const animate = true;
   let text = "";
   const choices: string[] = [];
-  const params = new Map<string, string>();
   twine.incrementVisitCount("adae8f46");
 
   // "Ha! Your arrogance reminds me of a young warrior..."
-  text = "39e61f0e";
+  text = "892e7a3b";
   // Just tell me how to fight it
   choices.push("69ff1620");
 
-  host.text.display("adae8f46", title, text, choices, params, animate);
+  host.text.display("adae8f46", title, text, choices, state.params, animate);
 }
 
 // Show interact button for "Just tell me how to fight it"
@@ -306,7 +117,7 @@ export function stage_69ff1620(entered: bool): void {
   if (entered) {
     host.controls.setButtons([
       {
-        label: "interact",
+        label: interactButton,
         slug: "passage/69ff1620",
       },
     ]);
@@ -322,13 +133,12 @@ export function passage_69ff1620(): void {
   const animate = true;
   let text = "";
   const choices: string[] = [];
-  const params = new Map<string, string>();
   twine.incrementVisitCount("69ff1620");
 
   // "You came to this place because there was nowhere else to go. No one has connected the world you came from to a world of their own imagination. So you were sent here, to me, at the edge of creation.\n\nTo push back the Nothing, someone must add a level to Get Lost. Then, all future travels will go there, instead of here.\n\nGo to https://docs.getlost.gg to get started."
   text = "3b4b7cea";
 
-  host.text.display("69ff1620", title, text, choices, params, animate);
+  host.text.display("69ff1620", title, text, choices, state.params, animate);
 }
 
 // Show interact button for "Talk to Gmork"
@@ -336,7 +146,7 @@ export function stage_EchoOfGmork(entered: bool): void {
   if (entered) {
     host.controls.setButtons([
       {
-        label: "interact",
+        label: interactButton,
         slug: "passage/ed5d9d40",
       },
     ]);
@@ -352,21 +162,20 @@ export function passage_EchoOfGmork(): void {
   const animate = true;
   let text = "";
   const choices: string[] = [];
-  const params = new Map<string, string>();
   twine.incrementVisitCount("ed5d9d40");
 
   // "The Nothing grows stronger... Before long, it will devour this place. Leave now, before it's too late."
-  text = "8ed103cf";
+  text = "d95efaf0";
   // Who are you?
   choices.push("80495816");
 
   // What is the Nothing?
-  choices.push("1ccc7c51");
+  choices.push("70002ded");
 
   // How do I leave?
   choices.push("65e17d6e");
 
-  host.text.display("ed5d9d40", title, text, choices, params, animate);
+  host.text.display("ed5d9d40", title, text, choices, state.params, animate);
 }
 
 // Show interact button for "Who are you?"
@@ -374,7 +183,7 @@ export function stage_80495816(entered: bool): void {
   if (entered) {
     host.controls.setButtons([
       {
-        label: "interact",
+        label: interactButton,
         slug: "passage/80495816",
       },
     ]);
@@ -390,18 +199,17 @@ export function passage_80495816(): void {
   const animate = true;
   let text = "";
   const choices: string[] = [];
-  const params = new Map<string, string>();
   twine.incrementVisitCount("80495816");
 
   // "I was once a servant to the power behind the Nothing."
-  text = "78c753ff";
+  text = "5558f7b7";
   // But what is it?
-  choices.push("057a1926");
+  choices.push("9501590c");
 
   // How do I leave?
   choices.push("65e17d6e");
 
-  host.text.display("80495816", title, text, choices, params, animate);
+  host.text.display("80495816", title, text, choices, state.params, animate);
 }
 
 // Show interact button for "Why are you helping me?"
@@ -409,7 +217,7 @@ export function stage_12c63041(entered: bool): void {
   if (entered) {
     host.controls.setButtons([
       {
-        label: "interact",
+        label: interactButton,
         slug: "passage/12c63041",
       },
     ]);
@@ -425,13 +233,12 @@ export function passage_12c63041(): void {
   const animate = true;
   let text = "";
   const choices: string[] = [];
-  const params = new Map<string, string>();
   twine.incrementVisitCount("12c63041");
 
   // "You remind me of someone from long ago... And the mistakes that I made when I knew them...\n\nFarewell, $playerName."
   text = "50388ea1";
 
-  host.text.display("12c63041", title, text, choices, params, animate);
+  host.text.display("12c63041", title, text, choices, state.params, animate);
 }
 
 // Show interact button for "what-is-nothing"
@@ -439,7 +246,7 @@ export function stage_e1e1ddc3(entered: bool): void {
   if (entered) {
     host.controls.setButtons([
       {
-        label: "interact",
+        label: interactButton,
         slug: "passage/e1e1ddc3",
       },
     ]);
@@ -455,11 +262,10 @@ export function passage_e1e1ddc3(): void {
   const animate = true;
   let text = "";
   const choices: string[] = [];
-  const params = new Map<string, string>();
   twine.incrementVisitCount("e1e1ddc3");
 
   // "The Nothing is despair. It is the absence of dreams. It is what is left when people lose hope and forget how to create."
-  text = "27bdcc6f";
+  text = "b21d8b47";
   // How do I stop it?
   choices.push("adae8f46");
 
@@ -469,7 +275,7 @@ export function passage_e1e1ddc3(): void {
   // How do I leave?
   choices.push("65e17d6e");
 
-  host.text.display("e1e1ddc3", title, text, choices, params, animate);
+  host.text.display("e1e1ddc3", title, text, choices, state.params, animate);
 }
 
 export function dispatch(passageId: string): void {
@@ -514,4 +320,3 @@ export function dispatch(passageId: string): void {
     log(`No passage found for ${passageId}, does it have content?`);
   }
 }
-
