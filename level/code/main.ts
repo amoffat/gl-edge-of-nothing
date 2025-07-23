@@ -1,6 +1,5 @@
 import * as host from "@gl/api/w2h/host";
 
-import { String } from "@gl/types/i18n";
 import { getSunEventName, SunEvent } from "@gl/types/time";
 import { Player } from "@gl/utils/player";
 import * as dialogue from "./generated/dialogue";
@@ -41,18 +40,6 @@ export function initRoom(): void {
    * Be sure to comment out the setSunTime call in `tickRoom` if you do this.
    */
   host.time.setSunEvent(SunEvent.SolarNoon, 0);
-}
-
-/**
- * Called on level initialization to expose what strings we use in our level.
- * This is used for localization.
- *
- * @returns The strings that our level uses.
- */
-export function strings(): String[] {
-  const ourStrings: String[] = [];
-  const dialogueStrings = dialogue.strings();
-  return ourStrings.concat(dialogueStrings);
 }
 
 /**

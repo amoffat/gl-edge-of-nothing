@@ -10,7 +10,9 @@ import jinja2
 from lark import ParseTree, Token, Tree
 
 from .types.passage import ConstructPassage, TraverseState, TweePassage
-from .utils.name import hash_name
+from .types.render import RenderResult
+from .utils.name import hash_name, i18nextify
+from .utils.strings import escape_and_quote, snake_to_camel_case
 
 THIS_DIR = Path(__file__).parent
 _TMPL_ENV = jinja2.Environment(
@@ -31,6 +33,13 @@ class Variable:
     name: str
     type: str
     value: str
+
+
+class I18nDict(dict):
+    def __setitem__(self, key, value):
+        if isinstance(value, str):
+            value = i18nextify(value)
+        super().__setitem__(key, value)
 
 
 def format(code: str) -> str:
@@ -54,6 +63,10 @@ def format(code: str) -> str:
 
 def make_state_class_name(suffix: str) -> str:
     return f"State_{suffix}"
+
+
+def is_state_object(type_name: str) -> bool:
+    return type_name.startswith("State_") or type_name == "State"
 
 
 def map_op(op: str) -> str:
@@ -87,22 +100,6 @@ def map_op(op: str) -> str:
     return operator_map.get(op, op)
 
 
-def escape_string(s: str) -> str:
-    return s.replace('"', '\\"').strip().replace("\n", "\\n")
-
-
-def escape_and_quote(s: str) -> str:
-    return f'"{escape_string(s)}"'
-
-
-def snake_to_camel_case(snake_str: str) -> str:
-    """
-    Converts a snake_case string to camelCase.
-    """
-    components = snake_str.split("_")
-    return components[0] + "".join(x.title() for x in components[1:])
-
-
 def make_nice_tag(tag: str) -> str | None:
     """
     Converts a tag into a nice identifier by replacing spaces with underscores
@@ -126,6 +123,29 @@ def create_state_class(name: str, variable_types: dict[str, Variable]) -> str:
     for var_name, variable in variable_types.items():
         state_class += f"this.{var_name} = {variable.value};\n"
     state_class += "}\n"
+    # Add a helper method which returns a Map<string, string> of all
+    # variables in the state, for easy access in the level code.
+    state_class += "get params(): string[] {\n"
+    state_class += "const params = new Array<string>();\n"
+    for var_name, variable in variable_types.items():
+        # If the variable is a state object, we need to flatten that object's
+        # parameters into the params array, and prefix them with the variable
+        # name.
+        if is_state_object(variable.type):
+            name_prefix = var_name
+            state_class += (
+                f"for (let i: i32 = 0; i < this.{var_name}.params.length; i+=2) {{\n"
+            )
+            state_class += f"const name = this.{var_name}.params[i];\n"
+            state_class += f"const value = this.{var_name}.params[i + 1];\n"
+            state_class += f'params.push("{name_prefix}." + name);\n'
+            state_class += "params.push(value);\n"
+            state_class += "}\n"
+        else:
+            state_class += f'params.push("{var_name}");\n'
+            state_class += f"params.push(this.{var_name}.toString());\n"
+    state_class += "return params;\n"
+    state_class += "}\n"
     state_class += "}"
     return state_class
 
@@ -133,8 +153,13 @@ def create_state_class(name: str, variable_types: dict[str, Variable]) -> str:
 def infer_basic_type(value_node: Union[ParseTree, Token]) -> tuple[str, str]:
     if isinstance(value_node, Token):
         if value_node.type == "NUMBER":
-            # FIXME not everything is a float...
-            return ("f32", value_node.value)
+            num_value = value_node.value
+            if "." in num_value or "e" in num_value.lower():
+                # If it has a decimal point or is in scientific notation, treat as float
+                return ("f32", value_node.value)
+            else:
+                # Otherwise, treat as integer
+                return ("i32", value_node.value)
         elif value_node.type == "STRING":
             return ("string", escape_and_quote(value_node.value))
         elif value_node.type == "ESCAPED_STRING":
@@ -269,7 +294,7 @@ def topological_sort(
     return stack[::-1]  # Reverse the stack to get the topological order
 
 
-def render(passages: list[TweePassage]) -> str:
+def render(passages: list[TweePassage]) -> RenderResult:
     """
     Converts a dictionary of Sugarcube parse trees into Typescript code.
     Each passage is converted into a function named by a hash of the passage name.
@@ -282,7 +307,7 @@ def render(passages: list[TweePassage]) -> str:
         name_num += 1
         return f"{prefix}_{name_num}"
 
-    all_strings: dict[str, str] = {}
+    all_strings: dict[str, str] = I18nDict()
     string_id_to_passage_id: dict[str, str] = {}
 
     def traverse(
@@ -302,15 +327,13 @@ def render(passages: list[TweePassage]) -> str:
                 return "null"
             elif node.type == "ESCAPED_STRING":
                 s = node.value
-                all_strings[hash_name(s)] = s
                 return s
             elif node.type == "LINK_TEXT":
                 s = node.value
-                all_strings[hash_name(s)] = escape_and_quote(s)
                 return s
             elif node.type == "TEXT":
-                s = node.value
-                all_strings[hash_name(s)] = escape_and_quote(s)
+                s = node.value.strip()
+                all_strings[hash_name(s)] = s
                 return s
 
             return node.value
@@ -322,17 +345,20 @@ def render(passages: list[TweePassage]) -> str:
             )
         elif node.data == "link":
             text = traverse(state=state, node=node.children[0])
-            string_id = hash_name(text)
-            all_strings[string_id] = escape_and_quote(text)
-
             # Do we have a target slug? Then we need to record it as the child
             # of this passage.
             if len(node.children) > 1:
                 target_name = cast(Token, node.children[1]).value
                 target_id = hash_name(target_name)
+
+                string_id = hash_name(text + "|" + target_name)
+                all_strings[string_id] = text
+
                 string_id_to_passage_id[string_id] = target_id
             else:
+                string_id = hash_name(text)
                 target_id = string_id
+                all_strings[string_id] = text
 
             state.children.append(target_id)
             choices = f'// {text}\nchoices.push("{string_id}");'
@@ -383,12 +409,12 @@ def render(passages: list[TweePassage]) -> str:
                 raise ValueError(f"Unknown variable type: {var.data}")
 
         elif node.data == "text":
-            text_expr = cast(Token, node.children[0]).value
-            if not text_expr.strip():
+            text_expr = cast(Token, node.children[0]).value.strip()
+            if not text_expr:
                 return ""
             text_id = hash_name(text_expr)
-            all_strings[text_id] = escape_and_quote(text_expr)
-            text = f'// {all_strings[text_id]}\ntext = "{text_id}";'
+            all_strings[text_id] = text_expr
+            text = f'// {escape_and_quote(text_expr)}\ntext = "{text_id}";'
             return text
 
         elif node.data == "function_call":
@@ -463,6 +489,13 @@ def render(passages: list[TweePassage]) -> str:
                 for arg in node.children[1:]
             )
             return f"{function_name}({arguments})"
+
+        elif node.data == "array":
+            elements = ", ".join(
+                traverse(state=state, node=cast(ParseTree, child))
+                for child in node.children
+            )
+            return f"[{elements}]"
 
         elif node.data == "object_literal":
 
@@ -631,7 +664,7 @@ def render(passages: list[TweePassage]) -> str:
 
         title_id = hash_name(title)
         cons_passage.title = escape_and_quote(title)
-        all_strings[title_id] = cons_passage.title
+        all_strings[title_id] = title
         cons_passage.title_id = title_id
 
     # Perform a topological sort of our passages so that when we start deriving
@@ -660,13 +693,19 @@ def render(passages: list[TweePassage]) -> str:
         if cons_passage.id in passage_id_to_nice_id:
             cons_passage.nice_id = passage_id_to_nice_id[cons_passage.id]
 
+    interact_button = "interact"
+    all_strings[interact_button] = "Interact"
+
     code_tmpl = _TMPL_ENV.get_template("code.j2")
     output = code_tmpl.render(
-        all_strings=all_strings,
+        interact_button=interact_button,
         state_classes=state_class_defs,
         passages=passage_functions,
         choice_to_passage=string_id_to_passage_id,
     )
     output = format(output)
 
-    return output
+    return RenderResult(
+        code=output,
+        strings=all_strings,
+    )
